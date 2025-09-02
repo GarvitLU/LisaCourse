@@ -37,8 +37,10 @@ A powerful Flask-based API that transforms PDF documents into comprehensive educ
    ```
 
 3. **Set up environment variables**
+   
+   Create a `.env` file in the root directory:
    ```bash
-   cp config.env.example .env
+   touch .env
    ```
    
    Edit `.env` and add your API keys:
@@ -72,6 +74,8 @@ Visit `http://localhost:5001` to access the web interface where you can:
 - Generate curricula with AI
 - Preview generated content and images
 - View structured course data
+
+The web interface is built with modern HTML/CSS/JavaScript and provides an intuitive way to interact with the API.
 
 ## 📡 API Endpoints
 
@@ -270,6 +274,17 @@ Get instructions for extracting Lisa token from browser.
 2. Get your API key from the dashboard
 3. The API uses Ideogram v3 with realistic style generation
 
+### Lisa Token Setup
+
+To get your Lisa authorization token:
+
+1. Open Lisa app in your browser
+2. Press F12 to open Developer Tools
+3. Go to Application/Storage tab
+4. Look for 'lisa_access' in Local Storage
+5. Copy the token value
+6. Use it in your API calls or set it in the `.env` file
+
 ## 📖 Usage Examples
 
 ### Using curl
@@ -326,6 +341,7 @@ cover_image = data["structured_course"]["course_cover_image"]
 - **Image Generation**: Ideogram API for educational illustrations
 - **Storage**: AWS S3 for permanent image storage
 - **Lisa Integration**: Direct API calls to Lisa app
+- **Web Interface**: HTML/CSS/JavaScript frontend for user interaction
 
 ### Data Flow
 
@@ -335,26 +351,43 @@ cover_image = data["structured_course"]["course_cover_image"]
 4. **S3 Upload** → Permanent storage of generated images
 5. **Lisa Integration** → Course and module creation in Lisa app
 
+### File Structure
+
+```
+28-LisaCourse/
+├── app.py                 # Main Flask application
+├── requirements.txt       # Python dependencies
+├── start.sh              # Startup script
+├── .env                  # Environment variables (create this)
+├── .gitignore            # Git ignore rules
+├── README.md             # This documentation
+├── templates/
+│   └── index.html        # Web interface template
+└── venv/                 # Virtual environment (auto-created)
+```
+
 ## 🧪 Testing
-
-### Test Scripts
-
-- **`create_sample_pdf.py`**: Creates sample PDFs for testing
-- **`test_sample_pdf.py`**: Creates test PDFs with specific content
-- **`get_lisa_token.py`**: Helps extract and validate Lisa tokens
 
 ### Manual Testing
 
 ```bash
-# Create test PDF
-python create_sample_pdf.py
-
-# Test token validation
-python get_lisa_token.py
-
 # Run the application
 python app.py
+
+# Test the web interface
+# Open http://localhost:5001 in your browser
+
+# Test API endpoints using curl or Postman
+curl http://localhost:5001/health
 ```
+
+### Testing Workflow
+
+1. **Start the application**: `python app.py`
+2. **Test health endpoint**: Visit `/health` to verify API is running
+3. **Test web interface**: Upload a PDF through the web UI
+4. **Test API endpoints**: Use curl or Postman for direct API testing
+5. **Test Lisa integration**: Use a valid Lisa token to test course creation
 
 ## 🚨 Error Handling
 
@@ -380,6 +413,7 @@ The API provides comprehensive error handling:
 - **Authentication**: JWT token management for secure access
 - **CORS**: Configured for cross-origin requests
 - **Input Validation**: Proper validation of all inputs
+- **Environment Protection**: `.env` file is gitignored to prevent key exposure
 
 ## 📊 Performance
 
@@ -412,6 +446,20 @@ EXPOSE 5001
 CMD ["python", "app.py"]
 ```
 
+### Environment Setup for Production
+
+```bash
+# Create production environment file
+cp .env .env.production
+
+# Edit production environment variables
+nano .env.production
+
+# Use production environment
+export $(cat .env.production | xargs)
+python app.py
+```
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -432,6 +480,7 @@ For issues and questions:
 2. Verify your API keys and configuration
 3. Test individual endpoints for debugging
 4. Check the Lisa app integration status
+5. Review the web interface for user-friendly error messages
 
 ## 🔄 Changelog
 
@@ -445,6 +494,7 @@ For issues and questions:
 - ✅ Comprehensive API endpoints
 - ✅ JWT token management
 - ✅ Error handling and logging
+- ✅ Secure environment variable management
 
 ---
 
